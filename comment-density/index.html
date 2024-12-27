@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Density Testing Tool</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+    <style>
+        body {
+            display: flex;
+        }
+
+        .testing{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e8b57;
+        }
+
+        .info-button {
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            background: none;
+            color: #2e8b57;
+        }
+
+        .info-popup,
+        .help-popup {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            text-align: left;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 535px;
+            z-index: 1;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #codePreview {
+            white-space: pre-wrap;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-overflow">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+            </div>
+            <div class="links">
+                <a href="../availibility/" class="link">Availability</a>
+                <a href="../conciseness/" class="link">Conciseness</a>
+                <a href="../consistency/" class="link">Consistency</a>
+                <a href="../error-tolerance/" class="link">Error Tolerance</a>
+                <a href="../instrumentation/" class="link">Instrumentation</a>
+                <a href="../load-testing/" class="link">Load Testing</a>
+                <a href="../modularity/" class="link">Modularity</a>
+                <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+                <a href="../complexity/" class="link">Complexity</a>
+                <a href="../security-accountability/" class="link">Security Accountability</a>
+                <a href="../self-documentation/" class="link">Self Documentation</a>
+                <a href="../comment-density/" class="link">Comment Density</a>
+                <a href="../time-behavior/" class="link">Time Behavior</a>
+                <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+                <a href="../code-quality/" class="link">Code Quality</a>
+            </div>
+        </div>
+    </nav>
+    <div class="testing-section">
+        <div class="testing">
+            <div class="container">
+                <h1>Comment Density</h1>
+                <input type="file" id="fileInput">
+                <button id="analyzeButton">Analyze</button>
+                <button class="info-button" id="infoButton">( i )</button>
+                <button class="info-button" id="helpButton">( ? )</button>
+                <div id="result"></div>
+                <div id="codePreview"></div>
+                <div id="info" class="info-popup">
+                    <h2>Program Information</h2>
+                    <p>This program calculates the comment density of a given code file. The comment density is the ratio of
+                        comment lines to total lines of code, presented as a percentage. </p>
+                    <p> Supported languages: Javascript, Python, Java, C.</p>
+                </div>
+                <div id="help" class="help-popup">
+                    <h2>How to Use</h2>
+                    <p>1. Click the "Choose File" button to select a code file (c, py, js, or java) from your computer.</p>
+                    <p>2. Click the "Analyze" button to analyze the selected file.</p>
+                    <p>3. The results, including the comment density and a preview of the code, will be displayed below.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateCommentDensity(code, language) {
+            const lines = code.split('\n');
+            const totalLines = lines.length;
+            let commentLines = 0;
+            let insideMultiLineComment = false;
+
+            const commentPatterns = {
+                'javascript': { singleLine: /^\/\/.*$/, multiLineStart: /^\/\*/, multiLineEnd: /\*\/$/ },
+                'python': { singleLine: /^#.*$/ },
+                'c': { singleLine: /^\/\/.*$/, multiLineStart: /^\/\*/, multiLineEnd: /\*\/$/ },
+                'java': { singleLine: /^\/\/.*$/, multiLineStart: /^\/\*/, multiLineEnd: /\*\/$/ },
+            };
+
+            const patterns = commentPatterns[language.toLowerCase()] || {};
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+
+                if (patterns.multiLineStart && patterns.multiLineStart.test(trimmedLine)) {
+                    insideMultiLineComment = true;
+                    commentLines++;
+                } else if (patterns.multiLineEnd && patterns.multiLineEnd.test(trimmedLine)) {
+                    insideMultiLineComment = false;
+                    commentLines++;
+                } else if (insideMultiLineComment) {
+                    commentLines++;
+                } else if (patterns.singleLine && patterns.singleLine.test(trimmedLine)) {
+                    commentLines++;
+                }
+            });
+
+            if (totalLines === 0) {
+                return { density: 0.0, commentLines: 0, totalLines: 0 };
+            }
+
+            const commentDensity = (commentLines / totalLines) * 100;
+            return { density: commentDensity, commentLines, totalLines };
+        }
+
+        function getLanguageByExtension(extension) {
+            const extensionsMap = {
+                'js': 'Javascript',
+                'py': 'Python',
+                'c': 'C',
+                'java': 'Java',
+            };
+            return extensionsMap[extension.toLowerCase()] || 'unknown';
+        }
+
+        document.getElementById('analyzeButton').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const code = event.target.result;
+                const extension = file.name.split('.').pop();
+                const language = getLanguageByExtension(extension);
+
+                if (language === 'unknown') {
+                    alert('Unsupported file type. Please upload a supported code file.');
+                    return;
+                }
+
+                const { density, commentLines, totalLines } = calculateCommentDensity(code, language);
+
+                document.getElementById('result').innerHTML = `
+                    <p>Programming Language: ${language}</p>
+                    <p>Comment Lines: ${commentLines}</p>
+                    <p>Total Lines of Code: ${totalLines}</p>
+                    <p><strong>Comment Density: ${density.toFixed(2)}%</strong></p>
+                    <p><strong>Code Preview</strong></p>
+                `;
+
+                document.getElementById('codePreview').innerText = code;
+            };
+
+            reader.readAsText(file);
+        });
+        document.getElementById('infoButton').addEventListener('click', function (event) {
+            event.stopPropagation();
+            const infoDiv = document.getElementById('info');
+            infoDiv.style.display = infoDiv.style.display === 'none' ? 'block' : 'none';
+            infoDiv.style.top = event.clientY + 'px';
+            infoDiv.style.left = event.clientX + 'px';
+        });
+
+        document.getElementById('helpButton').addEventListener('click', function (event) {
+            event.stopPropagation();
+            const helpDiv = document.getElementById('help');
+            helpDiv.style.display = helpDiv.style.display === 'none' ? 'block' : 'none';
+            helpDiv.style.top = event.clientY + 'px';
+            helpDiv.style.left = event.clientX + 'px';
+        });
+
+        document.addEventListener('click', function () {
+            document.getElementById('info').style.display = 'none';
+            document.getElementById('help').style.display = 'none';
+        });
+
+        document.getElementById('info').addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        document.getElementById('help').addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    </script>
+
+</body>
+
+</html>
