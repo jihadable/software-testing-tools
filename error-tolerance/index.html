@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error Tolerance Testing Tool</title>
+    <style>
+      body {
+        display: flex;
+      }
+      
+      .testing{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+        width: 100%;
+      }
+
+      h1 {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      #fileInputContainer {
+        margin: 20px 0;
+      }
+
+      #controls {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 20px;
+      }
+
+      .reset-button {
+        margin: 5px;
+        padding: 10px 10px;
+        font-size: 14px;
+        border-radius: 10px;
+        background-color: #707070;
+        color: white;
+        cursor: pointer;
+      }
+
+      #fileInputContainer input {
+        margin: 5px;
+        padding: 10px 10px;
+        font-size: 14px;
+        border-radius: 10px;
+        background-color: #00796b;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        max-width: 800px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+
+      #resultTable {
+        margin-top: 20px;
+      }
+
+      .highlight-error {
+        background-color: #ffcccc;
+      }
+
+      #codePreview {
+        width: 100%;
+        height: 600px;
+        max-width: 800px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f9f9f9;
+        overflow-x: scroll;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background-color: transparent;
+      }
+
+      .icons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      footer {
+        margin-bottom: 30px;
+        font-size: larger;
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+      }
+
+      .icon-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #00796b;
+        color: white;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-overflow">
+          <div class="logo">
+              <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+          </div>
+          <div class="links">
+              <a href="../availibility/" class="link">Availability</a>
+              <a href="../conciseness/" class="link">Conciseness</a>
+              <a href="../consistency/" class="link">Consistency</a>
+              <a href="../error-tolerance/" class="link">Error Tolerance</a>
+              <a href="../instrumentation/" class="link">Instrumentation</a>
+              <a href="../load-testing/" class="link">Load Testing</a>
+              <a href="../modularity/" class="link">Modularity</a>
+              <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+              <a href="../complexity/" class="link">Complexity</a>
+              <a href="../security-accountability/" class="link">Security Accountability</a>
+              <a href="../self-documentation/" class="link">Self Documentation</a>
+              <a href="../simplicity/" class="link">Simplicity</a>
+              <a href="../time-behavior/" class="link">Time Behavior</a>
+              <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+              <a href="../code-quality/" class="link">Code Quality</a>
+          </div>
+      </div>
+  </nav>
+    <div class="testing-section">
+      <div class="testing">
+        <div class="icons">
+          <button class="icon-button" onclick="showInfo()">i</button>
+          <button class="icon-button" onclick="showHelp()">?</button>
+        </div>
+    
+        <h1>Error Tolerance</h1>
+    
+        <div id="fileInputContainer">
+          <input type="file" id="fileInput" multiple />
+        </div>
+    
+        <div id="controls">
+          <button class="reset-button" onclick="reset()">Reset</button>
+        </div>
+    
+        <table id="resultTable">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Computations</th>
+              <th>Control Structures</th>
+              <th>Error Handlers</th>
+              <th>Error Tolerance (%)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+    
+        <h2>Code Preview</h2>
+        <div id="codePreview">No file selected.</div>
+    
+        <footer>22106050078 (Zale) | 22106050032 (Fatih)</footer>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

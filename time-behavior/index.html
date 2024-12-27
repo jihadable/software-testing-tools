@@ -1,0 +1,348 @@
+<!-- Bagus Adhitama (22106050005) | Akhmad Ikhsan Sayyid Al Haq (22106050045) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Behavior Testing Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+    <style>
+        body {
+            display: flex;
+        }
+
+        .testing{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .btns{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="file"],
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: limegreen;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        #code-preview {
+            width: 95%;
+            height: 200px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            overflow: auto;
+            font-family: monospace;
+        }
+
+        canvas {
+            margin-top: 30px;
+            max-width: 95%;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-overflow">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+            </div>
+            <div class="links">
+                <a href="../availibility/" class="link">Availability</a>
+                <a href="../conciseness/" class="link">Conciseness</a>
+                <a href="../consistency/" class="link">Consistency</a>
+                <a href="../error-tolerance/" class="link">Error Tolerance</a>
+                <a href="../instrumentation/" class="link">Instrumentation</a>
+                <a href="../load-testing/" class="link">Load Testing</a>
+                <a href="../modularity/" class="link">Modularity</a>
+                <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+                <a href="../complexity/" class="link">Complexity</a>
+                <a href="../security-accountability/" class="link">Security Accountability</a>
+                <a href="../self-documentation/" class="link">Self Documentation</a>
+                <a href="../simplicity/" class="link">Simplicity</a>
+                <a href="../time-behavior/" class="link">Time Behavior</a>
+                <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+                <a href="../code-quality/" class="link">Code Quality</a>
+            </div>
+        </div>
+    </nav>
+    <div class="testing-section">
+        <div class="testing">
+            <h1>Time Behavior Testing</h1>
+
+            <!-- Help and Info Buttons -->
+            <div class="btns">
+                <button class="show-help">Help(?)</button>
+                <button class="show-info">Info(i)</button><br><br>
+            </div>
+            
+            <form id="upload-form">
+                <label for="file-input">Upload JavaScript File:</label>
+                <input type="file" id="file-input" accept=".js">
+                <br><br>
+                <label for="iterations">Number of Iterations:</label>
+                <input type="number" id="iterations" value="1" min="1">
+                <br><br>
+                <button type="button" onclick="analyze()">Analyze</button>
+                <button type="button" onclick="exportToCSV()">Export to CSV</button>
+            </form>
+
+            <h2>Uploaded Code Preview</h2>
+            <div id="code-preview">No code uploaded yet.</div>
+
+            <h2>Results</h2>
+            <canvas id="result-chart" width="800" height="400"></canvas>
+            <h3 id="summary"></h3>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const codePreview = document.getElementById('code-preview');
+        const chartCanvas = document.getElementById('result-chart');
+        let chartInstance;
+
+        let responseTimes = [];
+        let processingTimes = [];
+        let latencies = [];
+        
+        fileInput.addEventListener('change', async () => {
+            if (!fileInput.files.length) {
+                codePreview.textContent = 'No code uploaded yet.';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (!file.name.endsWith('.js')) {
+                alert('Please upload a valid JavaScript file.');
+                return;
+            }
+
+            try {
+                const code = await file.text(); // Read file content
+                codePreview.textContent = code; // Display the code immediately
+                // Reset metrics
+                responseTimes = [];
+                processingTimes = [];
+                latencies = [];
+                
+                // Clear previous chart
+                if (chartInstance) {
+                    chartInstance.destroy();
+                    chartInstance = null; 
+                }
+                
+                document.getElementById('summary').innerHTML = ''; // Clear summary
+                document.getElementById('result-chart').getContext('2d').clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+                
+           } catch (err) {
+                console.error('Error reading file:', err);
+                alert('Failed to read the uploaded file.');
+           }
+       });
+
+       async function analyze() {
+           const iterations = parseInt(document.getElementById('iterations').value, 10);
+           const summary = document.getElementById('summary');
+
+           if (!fileInput.files.length) {
+               alert('Please upload a JavaScript file.');
+               return;
+           }
+
+           const file = fileInput.files[0];
+           if (!file.name.endsWith('.js')) {
+               alert('Please upload a valid JavaScript file.');
+               return;
+           }
+
+           try {
+               const code = await file.text(); // Read file content
+
+               for (let i = 0; i < iterations; i++) {
+                   const requestStart = performance.now();
+
+                   let processingStart, processingEnd;
+
+                   try {
+                       processingStart = performance.now();
+                       eval(code); // Execute the JavaScript code
+                       processingEnd = performance.now();
+                   } catch (err) {
+                       console.error('Error in script execution:', err);
+                       alert('Error in the uploaded JavaScript file. Check the console for details.');
+                       return;
+                   }
+
+                   const requestEnd = performance.now();
+
+                   const responseTime = requestEnd - requestStart;
+                   const processingTime = processingEnd - processingStart;
+                   const latency = processingStart - requestStart;
+
+                   responseTimes.push(responseTime.toFixed(2));
+                   processingTimes.push(processingTime.toFixed(2));
+                   latencies.push(latency.toFixed(2));
+               }
+
+               // Calculate throughput (operations per second)
+               const totalResponseTime = responseTimes.reduce((sum, res) => sum + parseFloat(res), 0);
+               const throughput = (iterations / (totalResponseTime / 1000)).toFixed(2);
+
+               // Update chart
+               updateChart(iterations);
+
+               // Summary
+               summary.innerHTML = `
+                   <strong>Summary:</strong><br>
+                   Throughput: ${throughput} operations/sec<br>
+                   Average Response Time: ${(totalResponseTime / iterations).toFixed(2)} ms<br>
+                   Average Processing Time: ${(processingTimes.reduce((sum, res) => sum + parseFloat(res), 0) / iterations).toFixed(2)} ms<br>
+                   Average Latency: ${(latencies.reduce((sum, res) => sum + parseFloat(res), 0) / iterations).toFixed(2)} ms
+               `;
+           } catch (err) {
+               console.error('Error processing file:', err);
+               alert('An error occurred while processing the file. Check the console for details.');
+           }
+       }
+
+       function updateChart(iterations) {
+           if (chartInstance) {
+               chartInstance.destroy();
+           }
+
+           const labels = Array.from({ length: iterations }, (_, i) => `Iteration ${i + 1}`);
+           chartInstance = new Chart(chartCanvas, {
+               type: 'line',
+               data: {
+                   labels,
+                   datasets: [
+                       {
+                           label: 'Response Time (ms)',
+                           data: responseTimes,
+                           borderColor: 'red',
+                           fill: false,
+                           tension: 0.1,
+                       },
+                       {
+                           label: 'Processing Time (ms)',
+                           data: processingTimes,
+                           borderColor: 'blue',
+                           fill: false,
+                           tension: 0.1,
+                       },
+                       {
+                           label: 'Latency (ms)',
+                           data: latencies,
+                           borderColor: 'green',
+                           fill: false,
+                           tension: 0.1,
+                       },
+                   ],
+               },
+               options: {
+                   responsive: true,
+                   plugins:{
+                       legend:{
+                           position:'top',
+                       },
+                   },
+                   scales:{
+                       y:{
+                           beginAtZero:true,
+                       },
+                   },
+               },
+           });
+       }
+       
+       function exportToCSV() {
+           const csvRows = [];
+           
+           // Headers
+           csvRows.push(['Iteration', 'Response Time (ms)', 'Processing Time (ms)', 'Latency (ms)', 'Throughput (operations/sec)']);
+           
+           // Data rows
+           const iterations = responseTimes.length; // Get the number of iterations
+           for (let i = 0; i < iterations; i++) {
+               csvRows.push([
+                   `Iteration ${i + 1}`,
+                   responseTimes[i],
+                   processingTimes[i],
+                   latencies[i],
+                   (iterations / (responseTimes.reduce((sum, res) => sum + parseFloat(res), 0) / 1000)).toFixed(2)
+               ]);
+           }
+           
+           // Create CSV string
+           const csvString = csvRows.map(row => row.join(',')).join('\n');
+
+           // Create a Blob from the CSV string
+           const blob = new Blob([csvString], { type:'text/csv' });
+
+           // Create a link element
+           const link = document.createElement('a');
+           link.href= URL.createObjectURL(blob);
+           link.download= 'performance_results.csv';
+
+           // Append link to body and trigger click
+           document.body.appendChild(link);
+           link.click();
+
+           // Clean up and remove link
+           document.body.removeChild(link);
+       }
+
+        document.querySelector(".show-help").addEventListener("click", () => {
+            alert('1. Click on the "Choose File" button to upload a JavaScript (.js) file that you want to analyze.\n2. Enter the number of times you want to execute the uploaded code. This helps in getting an average performance measurement.\n3. Click the "Analyze" button to start the analysis. The tool will execute your code and gather performance metrics.\n4. After analysis, you will see a summary of performance metrics including throughput, average response time, processing time, and latency. A chart will also display these metrics for each iteration.\n5. Click on "Export to CSV" to download the results of your analysis in CSV format.')
+        })
+
+        document.querySelector(".show-info").addEventListener("click", () => {
+            alert("Time Behavior Testing is a web-based tool designed to help developers analyze the performance of their JavaScript code. By uploading a JavaScript file and specifying the number of iterations, you can measure key performance metrics such as response time, processing time, and latency.")
+        })
+   </script>
+</body>
+</html>

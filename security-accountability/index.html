@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Accountability Testing Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-overflow">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+            </div>
+            <div class="links">
+                <a href="../availibility/" class="link">Availability</a>
+                <a href="../conciseness/" class="link">Conciseness</a>
+                <a href="../consistency/" class="link">Consistency</a>
+                <a href="../error-tolerance/" class="link">Error Tolerance</a>
+                <a href="../instrumentation/" class="link">Instrumentation</a>
+                <a href="../load-testing/" class="link">Load Testing</a>
+                <a href="../modularity/" class="link">Modularity</a>
+                <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+                <a href="../complexity/" class="link">Complexity</a>
+                <a href="../security-accountability/" class="link">Security Accountability</a>
+                <a href="../self-documentation/" class="link">Self Documentation</a>
+                <a href="../simplicity/" class="link">Simplicity</a>
+                <a href="../time-behavior/" class="link">Time Behavior</a>
+                <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+                <a href="../code-quality/" class="link">Code Quality</a>
+            </div>
+        </div>
+    </nav>
+    <div class="testing-section">
+        <div class="testing">
+            <div class="container">
+                <h1>Security Accountability Testing</h1>
+                <div class="button-container">
+                    <button id="help-btn">?</button>
+                    <button id="info-btn">i</button>
+                </div>
+        
+                <div class="upload-section">
+                    <label for="fileInput" class="upload-label">Upload JavaScript File</label>
+                    <input type="file" id="fileInput" accept=".js">
+                    <button id="upload-btn" class="upload-btn">Upload File</button>
+                </div>
+        
+                <pre id="file-content"></pre>
+        
+                <button id="calculate-btn" class="calculate-btn">Calculate Accountability</button>
+        
+                <div class="result-section">
+                    <h2>Result:</h2>
+                    <p>Total modules: <span id="total-modules">0</span></p>
+                    <p>Protected modules: <span id="protected-modules">0</span></p>
+                    <p>Modules with access leak: <span id="leak-modules">0</span></p>
+                    <p>Modules with role management: <span id="role-modules">0</span></p>
+                    <p>Score: <span id="security-score">0%</span></p>
+                </div>
+            </div>
+        
+            <!-- Help Modal -->
+            <div id="help-modal" class="modal">
+                <div class="modal-content">
+                    <span id="close-help" class="close">&times;</span>
+                    <p>This tool helps calculate the Security Accountability of your JavaScript code...</p>
+                </div>
+            </div>
+        
+            <!-- Info Modal -->
+            <div id="info-modal" class="modal">
+                <div class="modal-content">
+                    <span id="close-info" class="close">&times;</span>
+                    <p>Info about Security Accountability...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Cara Mengukur Modularity
+
+Fan-in dan Fan-out Analysis
+
+Fan-in: Jumlah modul lain yang menggunakan modul tersebut.
+Fan-out: Jumlah modul yang digunakan oleh modul tersebut.
+
+Modularity Score = Σ(Fan-in) / Σ(Fan-out)

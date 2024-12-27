@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Conciseness Testing Tool</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-overflow">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+            </div>
+            <div class="links">
+                <a href="../availibility/" class="link">Availability</a>
+                <a href="../conciseness/" class="link">Conciseness</a>
+                <a href="../consistency/" class="link">Consistency</a>
+                <a href="../error-tolerance/" class="link">Error Tolerance</a>
+                <a href="../instrumentation/" class="link">Instrumentation</a>
+                <a href="../load-testing/" class="link">Load Testing</a>
+                <a href="../modularity/" class="link">Modularity</a>
+                <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+                <a href="../complexity/" class="link">Complexity</a>
+                <a href="../security-accountability/" class="link">Security Accountability</a>
+                <a href="../self-documentation/" class="link">Self Documentation</a>
+                <a href="../simplicity/" class="link">Simplicity</a>
+                <a href="../time-behavior/" class="link">Time Behavior</a>
+                <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+                <a href="../code-quality/" class="link">Code Quality</a>
+            </div>
+        </div>
+    </nav>
+    <div class="testing-section">
+        <div class="testing">
+            <h1>Conciseness Calculator</h1>
+            <div class="container">
+                <div class="container-result">
+                    <label for="fileInput" class="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-upload"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 9l5 -5l5 5" /><path d="M12 4l0 12" /><p>Upload File</p></svg>
+                        <input type="file" id="fileInput" accept=".cs,.py,.java,.js,.php,.html" style="display: none; margin: 0 auto;" onchange="showFileName">
+                        
+                    </label>
+                    <p id="currentFile"></p>
+                    <button id="calculateBtn">Calculate Conciseness</button>
+                    <div class="output" id="output">
+                        <h2>Results:</h2>
+                        <pre id="results"></pre>
+                    </div> 
+                </div>
+                <div class="container-function">
+                    <div class="actions">
+                    <h2>Function Names:</h2>
+                    <div class="btn"></div>
+                    <button title="Download Functions" onclick="downloadText('functionNames', 'functions.txt')">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>
+                    </button>
+                    <button title="Copy Functions" onclick="copyToClipboard('functionNames')">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-copy"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>
+                    </button>
+                    </div>
+                    <pre id="functionNames"></pre>
+                </div>
+            </div>
+            <div class="help">
+                <button id="helpBtn" title="Click for more information" onclick="alert('1. Click the Upload button and select a file.\n2. Click the Calculate Conciseness button.\n3. The results will appear in the Results section.\n4. To download the method names, click the Download button.\n5. To copy the method names, click the Copy button.');">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                </button>
+                <button id="aboutBtn" title="Click for more information" onclick="alert('This is a Conciseness Calculator.\n\nThis tool is used to calculate the conciseness of a source code file.\n\nConciseness is calculated by the following formula: (Total Lines / Total Number of Functions).\n\nSupported languages: C#, Python, Java, JavaScript, PHP, HTML.')"">
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
+
+

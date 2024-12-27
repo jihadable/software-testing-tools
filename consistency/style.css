@@ -1,0 +1,64 @@
+/* General Body Styling */
+body {
+  display: flex;
+}
+
+/* Container Styling */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Header Styling */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Button Styling */
+button {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #444444;
+}
+
+/* Textarea Styling */
+textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+/* File Input Styling */
+input[type="file"] {
+  margin-bottom: 15px;
+  display: block;
+}
