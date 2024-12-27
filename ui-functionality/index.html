@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Functionality Testing Tool</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+   <link rel="stylesheet" href="../styles/navbar.css">
+   <link rel="stylesheet" href="../styles/testing-section.css">
+  <style>
+    body {
+  display: flex;
+}
+
+.testing{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.tooltip-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: fit-content;
+}
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tooltip .tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+#results {
+  list-style: none;
+  padding: 0;
+}
+
+#results li {
+  margin: 5px 0;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.summary {
+  background-color: rgb(228, 228, 228);
+  padding: 20px;
+}
+
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-overflow">
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+        </div>
+        <div class="links">
+            <a href="../availibility/" class="link">Availability</a>
+            <a href="../conciseness/" class="link">Conciseness</a>
+            <a href="../consistency/" class="link">Consistency</a>
+            <a href="../error-tolerance/" class="link">Error Tolerance</a>
+            <a href="../instrumentation/" class="link">Instrumentation</a>
+            <a href="../load-testing/" class="link">Load Testing</a>
+            <a href="../modularity/" class="link">Modularity</a>
+            <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+            <a href="../complexity/" class="link">Complexity</a>
+            <a href="../security-accountability/" class="link">Security Accountability</a>
+            <a href="../self-documentation/" class="link">Self Documentation</a>
+            <a href="../comment-density/" class="link">Comment Density</a>
+            <a href="../time-behavior/" class="link">Time Behavior</a>
+            <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+            <a href="../code-quality/" class="link">Code Quality</a>
+        </div>
+    </div>
+</nav>
+<div class="testing-section">
+  <div class="testing">
+    <h1>UI Functionality Testing</h1>
+  <form id="urlForm">
+    <label for="url">Enter URL to test:</label>
+    <input type="url" id="url" placeholder="https://example.com" required />
+    <button type="submit">Test</button>
+    <div class="tooltip-box">
+      <!-- Icon (i) -->
+      <span class="tooltip">
+       <i>(i)</i>
+       <span class="tooltip-text">This tool is used to test the functionality of UI elements on a website. (note: this test only applies to websites that do not require authentication)</span>
+     </span>
+   
+     <!-- Icon (?) -->
+     <span class="tooltip">
+       <i>(?)</i>
+       <span class="tooltip-text">Steps: 1. Enter URL, 2. Click 'Test', 3. View test results.</span>
+     </span>
+    </div>
+  </form>
+
+  <h2>Results:</h2>
+  <ul id="results"></ul>
+
+  <div id="loading" style="display: none;">
+    <p>Loading...</p>
+  </div>
+  </div>
+</div>
+
+ <script>
+ document.getElementById('urlForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const url = document.getElementById('url').value;
+  const resultsList = document.getElementById('results');
+  const loadingDiv = document.getElementById('loading');
+  
+  // Clear previous results and show loading
+  resultsList.innerHTML = '';
+  loadingDiv.style.display = 'block';
+
+  try {
+    // Fetch HTML content (CORS restrictions apply)
+    const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+    const html = await response.text();
+
+    // Create a temporary DOM parser
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    const baseUrl = new URL(url); // Base URL for relative paths
+
+    // Function to resolve relative URLs to absolute
+    const resolveUrl = (relativeUrl) => {
+      try {
+        return new URL(relativeUrl, baseUrl).href;
+      } catch {
+        return 'Tidak berfungsi';
+      }
+    };
+
+    const results = [];
+    let buttonCount = 0,
+      functionalButtons = 0,
+      linkCount = 0,
+      functionalLinks = 0,
+      formCount = 0,
+      functionalForms = 0;
+
+    // Process buttons
+    const buttons = doc.querySelectorAll('button');
+    buttonCount = buttons.length;
+    buttons.forEach((button) => {
+      const text = button.textContent.trim() || 'Tombol Tanpa Teks';
+      const hasAction = button.onclick || button.hasAttribute('type');
+      const description = hasAction ? 'berfungsi, melakukan aksi' : 'tidak berfungsi';
+      if (hasAction) functionalButtons++;
+      results.push(`Tombol ${text}: Ditemukan - Tombol ${description}`);
+    });
+
+    // Process links
+    const links = doc.querySelectorAll('a');
+    linkCount = links.length;
+    links.forEach((link) => {
+      const text = link.textContent.trim() || 'Link Tanpa Teks';
+      const href = link.getAttribute('href');
+      const description = href ? `berfungsi, mengarahkan ke ${resolveUrl(href)}` : 'tidak berfungsi';
+      if (href) functionalLinks++;
+      results.push(`Link ${text}: Ditemukan - Link ${description}`);
+    });
+
+    // Process forms
+    const forms = doc.querySelectorAll('form');
+    formCount = forms.length;
+    forms.forEach((form) => {
+      const name = form.getAttribute('name') || 'Form Tanpa Nama';
+      const action = form.getAttribute('action');
+      const description = action ? `dikirimkan ke ${resolveUrl(action)}` : 'tidak berfungsi';
+      if (action) functionalForms++;
+      results.push(`Form ${name}: Ditemukan - Form ${description}`);
+    });
+
+    // Display summary
+    const summary = `
+      <p><strong>Summary:</strong></p>
+      <div class="summary">
+        <p>Total Buttons: ${buttonCount} (Functional: ${functionalButtons})</p>
+        <p>Total Links: ${linkCount} (Functional: ${functionalLinks})</p>
+        <p>Total Forms: ${formCount} (Functional: ${functionalForms})</p>
+      </div class="summary">
+    `;
+    resultsList.innerHTML = summary;
+
+    // Display detailed results
+    results.forEach((result) => {
+      const li = document.createElement('li');
+      li.textContent = result;
+      resultsList.appendChild(li);
+    });
+  } catch (error) {
+    console.error('Error fetching the URL:', error);
+    resultsList.innerHTML = '<li>Error fetching the URL. Make sure it is accessible.</li>';
+  } finally {
+    loadingDiv.style.display = 'none';
+  }
+});
+
+ </script>
+</body>
+</html>
