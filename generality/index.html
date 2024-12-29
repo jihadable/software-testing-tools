@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generality Testing Tool</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/testing-section.css">
+    <style>
+        body {
+            display: flex;
+        }
+
+        .testing{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #4e73df;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #5a5a5a;
+            text-align: center;
+        }
+
+        .info, .help, .import {
+            width: 180px;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info {
+            background-color: #3498db;
+        }
+
+        .info:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .help {
+            background-color: #2ecc71;
+        }
+
+        .help:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .import {
+            background-color: #f39c12;
+        }
+
+        .import:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .info, .help, .import {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            pre {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-overflow">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/c/c6/Logo_UIN_Sunan_Kalijaga.png" alt="UIN SUKA">
+            </div>
+            <div class="links">
+                <a href="../availibility/" class="link">Availability</a>
+                <a href="../conciseness/" class="link">Conciseness</a>
+                <a href="../consistency/" class="link">Consistency</a>
+                <a href="../error-tolerance/" class="link">Error Tolerance</a>
+                <a href="../instrumentation/" class="link">Instrumentation</a>
+                <a href="../load-testing/" class="link">Load Testing</a>
+                <a href="../modularity/" class="link">Modularity</a>
+                <a href="../performance-efficiency/" class="link">Performance Efficiency</a>
+                <a href="../complexity/" class="link">Complexity</a>
+                <a href="../security-accountability/" class="link">Security Accountability</a>
+                <a href="../self-documentation/" class="link">Self Documentation</a>
+                <a href="../comment-density/" class="link">Comment Density</a>
+                <a href="../time-behavior/" class="link">Time Behavior</a>
+                <a href="../ui-functionality/" class="link">UI Functionality Testing</a>
+                <a href="../generality/" class="link">Generality</a>
+            </div>
+        </div>
+    </nav>
+    <div class="testing-section">
+        <div class="testing">
+            <div class="container">
+                <h1>Generality </h1>
+                <p>
+                    This tool demonstrates the concept of **generality** in programming. Use the provided functionality to import and analyze code written in multiple programming languages.
+                </p>
+        
+                <div class="button-container">
+                    <button class="info" onclick="showInfo()">ℹ️ Info</button>
+                    <button class="help" onclick="showHelp()">❓ Help</button>
+                    <button class="import" onclick="importCode()">📂 Import Code</button>
+                </div>
+        
+                <pre id="output"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showInfo() {
+            const info = `Generality refers to the ability of code to work in a wide range of contexts, environments, or scenarios. Reusability is one of the key aspects of generality, alongside flexibility, portability, and modularity. This tool evaluates how well code can be used again in different situations.`;
+            document.getElementById('output').textContent = info;
+        }
+
+        function showHelp() {
+            const help = `Help Guide:
+1. Click on 'Info' to learn about generality and reusability.
+2. Use 'Import Code' to upload and analyze code.
+3. Evaluate generality based on reusability, flexibility, portability, and modularity.`;
+            document.getElementById('output').textContent = help;
+        }
+
+        // Calculate Generality and Reusability based on multiple factors
+        function calculateGeneralityAndReusability(code) {
+            let score = 0;
+            let explanation = "";
+
+            const lines = code.split('\n');
+
+            // Reusability (25 points) - Can the code be easily reused in different scenarios?
+            if (lines.some(line => /function|def|class/.test(line))) {
+                score += 25;
+                explanation += "+25: Code is structured for reuse with functions, classes, or modular components.\n";
+            } else {
+                explanation += "+0: Code lacks modular components, making reuse difficult.\n";
+            }
+
+            // Generality (30 points) - Can the code be used in various contexts?
+            if (lines.some(line => /input\s*=\s*.*\s*;/ || /.*\s*=\s*.*\s*\)/.test(line))) {
+                score += 30;
+                explanation += "+30: Code is generalized and can work in multiple environments.\n";
+            } else {
+                explanation += "+0: Code is too specific to a given context.\n";
+            }
+
+            // Flexibility (20 points) - Is the code adaptable to changing requirements?
+            if (lines.some(line => /if\s*\(.*\)\s*{/.test(line))) {
+                score += 20;
+                explanation += "+20: Code includes flexible logic, such as conditionals or configurable parameters.\n";
+            } else {
+                explanation += "+0: Code lacks flexibility and is hard to modify for different use cases.\n";
+            }
+
+            // Portability (15 points) - Can the code run across different platforms?
+            if (!/import\s*\(['"].*\)/.test(code)) {
+                score += 15;
+                explanation += "+15: Code has minimal dependencies, making it portable across different environments.\n";
+            } else {
+                explanation += "+0: Code relies on external dependencies, limiting portability.\n";
+            }
+
+            // Modularity (10 points) - Is the code modular and easily separated for reuse?
+            if (/function|def|class/.test(code)) {
+                score += 10;
+                explanation += "+10: Code is modular and can be reused in different contexts or applications.\n";
+            } else {
+                explanation += "+0: Code lacks modularity, making it harder to reuse effectively.\n";
+            }
+
+            explanation += `\nFinal Generality Score: ${score}/100`;
+            return explanation;
+        }
+
+        // Function to import and analyze code
+        function importCode() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.js,.py,.php';
+            input.onchange = async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const text = await file.text();
+                    const analysis = calculateGeneralityAndReusability(text);
+                    document.getElementById('output').textContent = `File: ${file.name}\n\n${text}\n\nAnalysis:\n${analysis}`;
+                }
+            };
+            input.click();
+        }
+    </script>
+</body>
+</html>
